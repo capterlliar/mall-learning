@@ -1,36 +1,21 @@
 package com.example.demo.mbg.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 public class PmsProductCategory implements Serializable {
     private Long id;
 
-    /**
-     * 名称
-     *
-     * @mbggenerated
-     */
+    @ApiModelProperty(value = "名称")
     private String name;
 
-    /**
-     * 显示状态：0->不显示；1->显示
-     *
-     * @mbggenerated
-     */
+    @ApiModelProperty(value = "显示状态：0->不显示；1->显示")
     private Integer showStatus;
 
-    /**
-     * 关键字
-     *
-     * @mbggenerated
-     */
+    @ApiModelProperty(value = "关键字")
     private String keywords;
 
-    /**
-     * 描述
-     *
-     * @mbggenerated
-     */
+    @ApiModelProperty(value = "描述")
     private String description;
 
     private static final long serialVersionUID = 1L;
