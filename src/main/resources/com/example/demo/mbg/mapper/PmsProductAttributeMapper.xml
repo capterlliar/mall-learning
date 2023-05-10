@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.mbg.mapper.PmsProductCategoryMapper">
-  <resultMap id="BaseResultMap" type="com.example.demo.mbg.model.PmsProductCategory">
+<mapper namespace="com.example.demo.mbg.mapper.PmsProductAttributeMapper">
+  <resultMap id="BaseResultMap" type="com.example.demo.mbg.model.PmsProductAttribute">
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_attribute_category_id" jdbcType="BIGINT" property="productAttributeCategoryId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="show_status" jdbcType="INTEGER" property="showStatus" />
-    <result column="keywords" jdbcType="VARCHAR" property="keywords" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.example.demo.mbg.model.PmsProductCategory">
-    <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    <result column="select_type" jdbcType="INTEGER" property="selectType" />
+    <result column="input_type" jdbcType="INTEGER" property="inputType" />
+    <result column="input_list" jdbcType="VARCHAR" property="inputList" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -69,20 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, show_status, keywords
+    id, product_attribute_category_id, name, select_type, input_type, input_list
   </sql>
-  <sql id="Blob_Column_List">
-    description
-  </sql>
-  <select id="selectByExampleWithBLOBs" parameterType="com.example.demo.mbg.model.PmsProductCategoryExample" resultMap="ResultMapWithBLOBs">
+  <select id="selectByExample" parameterType="com.example.demo.mbg.model.PmsProductAttributeExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from pms_product_category
+    from pms_product_attribute
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -90,162 +84,145 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByExample" parameterType="com.example.demo.mbg.model.PmsProductCategoryExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from pms_product_category
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from pms_product_category
+    from pms_product_attribute
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from pms_product_category
+    delete from pms_product_attribute
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.example.demo.mbg.model.PmsProductCategoryExample">
-    delete from pms_product_category
+  <delete id="deleteByExample" parameterType="com.example.demo.mbg.model.PmsProductAttributeExample">
+    delete from pms_product_attribute
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.example.demo.mbg.model.PmsProductCategory">
+  <insert id="insert" parameterType="com.example.demo.mbg.model.PmsProductAttribute">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into pms_product_category (name, show_status, keywords, 
-      description)
-    values (#{name,jdbcType=VARCHAR}, #{showStatus,jdbcType=INTEGER}, #{keywords,jdbcType=VARCHAR}, 
-      #{description,jdbcType=LONGVARCHAR})
+    insert into pms_product_attribute (product_attribute_category_id, name, 
+      select_type, input_type, input_list
+      )
+    values (#{productAttributeCategoryId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{selectType,jdbcType=INTEGER}, #{inputType,jdbcType=INTEGER}, #{inputList,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.example.demo.mbg.model.PmsProductCategory">
+  <insert id="insertSelective" parameterType="com.example.demo.mbg.model.PmsProductAttribute">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into pms_product_category
+    insert into pms_product_attribute
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productAttributeCategoryId != null">
+        product_attribute_category_id,
+      </if>
       <if test="name != null">
         name,
       </if>
-      <if test="showStatus != null">
-        show_status,
+      <if test="selectType != null">
+        select_type,
       </if>
-      <if test="keywords != null">
-        keywords,
+      <if test="inputType != null">
+        input_type,
       </if>
-      <if test="description != null">
-        description,
+      <if test="inputList != null">
+        input_list,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productAttributeCategoryId != null">
+        #{productAttributeCategoryId,jdbcType=BIGINT},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
-      <if test="showStatus != null">
-        #{showStatus,jdbcType=INTEGER},
+      <if test="selectType != null">
+        #{selectType,jdbcType=INTEGER},
       </if>
-      <if test="keywords != null">
-        #{keywords,jdbcType=VARCHAR},
+      <if test="inputType != null">
+        #{inputType,jdbcType=INTEGER},
       </if>
-      <if test="description != null">
-        #{description,jdbcType=LONGVARCHAR},
+      <if test="inputList != null">
+        #{inputList,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.example.demo.mbg.model.PmsProductCategoryExample" resultType="java.lang.Integer">
-    select count(*) from pms_product_category
+  <select id="countByExample" parameterType="com.example.demo.mbg.model.PmsProductAttributeExample" resultType="java.lang.Integer">
+    select count(*) from pms_product_attribute
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update pms_product_category
+    update pms_product_attribute
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
+      <if test="record.productAttributeCategoryId != null">
+        product_attribute_category_id = #{record.productAttributeCategoryId,jdbcType=BIGINT},
+      </if>
       <if test="record.name != null">
         name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.showStatus != null">
-        show_status = #{record.showStatus,jdbcType=INTEGER},
+      <if test="record.selectType != null">
+        select_type = #{record.selectType,jdbcType=INTEGER},
       </if>
-      <if test="record.keywords != null">
-        keywords = #{record.keywords,jdbcType=VARCHAR},
+      <if test="record.inputType != null">
+        input_type = #{record.inputType,jdbcType=INTEGER},
       </if>
-      <if test="record.description != null">
-        description = #{record.description,jdbcType=LONGVARCHAR},
+      <if test="record.inputList != null">
+        input_list = #{record.inputList,jdbcType=VARCHAR},
       </if>
     </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExampleWithBLOBs" parameterType="map">
-    update pms_product_category
-    set id = #{record.id,jdbcType=BIGINT},
-      name = #{record.name,jdbcType=VARCHAR},
-      show_status = #{record.showStatus,jdbcType=INTEGER},
-      keywords = #{record.keywords,jdbcType=VARCHAR},
-      description = #{record.description,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update pms_product_category
+    update pms_product_attribute
     set id = #{record.id,jdbcType=BIGINT},
+      product_attribute_category_id = #{record.productAttributeCategoryId,jdbcType=BIGINT},
       name = #{record.name,jdbcType=VARCHAR},
-      show_status = #{record.showStatus,jdbcType=INTEGER},
-      keywords = #{record.keywords,jdbcType=VARCHAR}
+      select_type = #{record.selectType,jdbcType=INTEGER},
+      input_type = #{record.inputType,jdbcType=INTEGER},
+      input_list = #{record.inputList,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.mbg.model.PmsProductCategory">
-    update pms_product_category
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.mbg.model.PmsProductAttribute">
+    update pms_product_attribute
     <set>
+      <if test="productAttributeCategoryId != null">
+        product_attribute_category_id = #{productAttributeCategoryId,jdbcType=BIGINT},
+      </if>
       <if test="name != null">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="showStatus != null">
-        show_status = #{showStatus,jdbcType=INTEGER},
+      <if test="selectType != null">
+        select_type = #{selectType,jdbcType=INTEGER},
       </if>
-      <if test="keywords != null">
-        keywords = #{keywords,jdbcType=VARCHAR},
+      <if test="inputType != null">
+        input_type = #{inputType,jdbcType=INTEGER},
       </if>
-      <if test="description != null">
-        description = #{description,jdbcType=LONGVARCHAR},
+      <if test="inputList != null">
+        input_list = #{inputList,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.example.demo.mbg.model.PmsProductCategory">
-    update pms_product_category
-    set name = #{name,jdbcType=VARCHAR},
-      show_status = #{showStatus,jdbcType=INTEGER},
-      keywords = #{keywords,jdbcType=VARCHAR},
-      description = #{description,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.example.demo.mbg.model.PmsProductCategory">
-    update pms_product_category
-    set name = #{name,jdbcType=VARCHAR},
-      show_status = #{showStatus,jdbcType=INTEGER},
-      keywords = #{keywords,jdbcType=VARCHAR}
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.mbg.model.PmsProductAttribute">
+    update pms_product_attribute
+    set product_attribute_category_id = #{productAttributeCategoryId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      select_type = #{selectType,jdbcType=INTEGER},
+      input_type = #{inputType,jdbcType=INTEGER},
+      input_list = #{inputList,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
