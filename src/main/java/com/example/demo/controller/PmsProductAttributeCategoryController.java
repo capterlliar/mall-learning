@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@Api(tags = "PmsProductCategoryController", description = "商品分类管理")
-@RequestMapping("/productCategory")
+@Api(tags = "PmsProductAttributeCategoryController", description = "商品属性分类管理")
+@RequestMapping("/productAttribute/category")
 public class PmsProductAttributeCategoryController {
     @Autowired
     PmsProductAttributeCategoryService pmsProductAttributeCategoryService;
